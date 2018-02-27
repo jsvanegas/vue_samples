@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js - binding date</title>
+</head>
+<body>
+    <div id="app">
+
+        <hello-component></hello-component>
+
+        <h1><span v-show="name">Hello, {{name}}!</span>Let's learn Vue.js</h1>
+
+        <img :src="name ? gladSrc : sadSrc">
+
+        <div>
+            <label for="">Lazy y Trim, para modificar el comportamiento de v-model</label>
+            <input type="text" v-model.lazy.trim="name">
+        </div>
+
+        <input type="text" v-model="name">
+
+        <div v-html="animalCodes.cat"></div>
+
+        <hr>
+
+        <div>
+            <div>
+                <label for="">Usando el evento change</label><br>
+                <select multiple="multiple" name="animals" id="animals" @change="populateAnimalsForZoo">
+                    <option v-for="animal in animals" :value="animal">{{animal}}</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="">Usando el objeto model</label><br>
+                <select v-model="animalsForZoo" multiple="multiple">
+                    <option v-for="animal in animals" :value="animal">{{animal}}</option>
+                </select>
+            </div>
+        </div>
+
+
+        <ol>
+            <h2><span>{{name}}!</span> Here's your Zoo</h2>
+            <li v-for="animal in animalsForZoo" v-html="animalCodes[animal]"></li>
+        </ol>
+        
+
+    </div>
+    <script src="js/vue.js"></script>
+    <script>
+
+
+        var HelloComponent = {
+            template: '<h1>Hello!</h1>'
+        };
+
+        var animalCodes = {
+            dog : '&#x1f436;',
+            cat : '&#x1f638;',
+            monkey : '&#x1f435;',
+            unicorn : '&#x1f984;',
+            tiger : '&#x1f42f;',
+            mouse : '&#x1f42d;',
+            rabbit : '&#x1f430;',
+            cow : '&#x1f42e;',
+            whale : '&#x1f433;',
+            horse : '&#x1f434;',
+            pig : '&#x1f437;',
+            frog : '&#x1f438;',
+            koala : '&#x1f43c;'
+        };
+
+        const animals = Object.keys(animalCodes);
+        var animalsForZoo = [];
+
+        const data = {
+            animalCodes: animalCodes,
+            animals: animals,
+            name: 'Juan',
+            sadSrc:'img/sad.png',
+            gladSrc:'img/glad.png',
+            animalsForZoo:animalsForZoo
+        };
+
+        new Vue({
+            el:'#app',
+            data:data,
+            methods:{
+                populateAnimalsForZoo:function (e) {
+                    this.animalsForZoo = [];
+                    const selected = document.querySelectorAll('#animals option:checked')
+                    for (var i = 0; i < selected.length; i++){
+                        this.animalsForZoo.push(selected[i].value);
+                    }
+                }
+            },
+            components:{
+                HelloComponent: HelloComponent
+            }
+        });
+
+    </script>
+
+</body>
+</html>
